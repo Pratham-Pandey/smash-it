@@ -1,0 +1,9 @@
+<library path="smash_it">
+  <class name="smash_it/SmashItBotSystemHardware"
+         type="smash_it::SmashItBotSystemHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+        Hardware interface for smash_it.
+    </description>
+  </class>
+</library>

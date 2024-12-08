@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="smashit_bot_ros2_control" params="name prefix use_mock_hardware">
+    
+    <ros2_control name="${name}" type="system">
+        <hardware>
+            <!-- <plugin>gazebo_ros2_control/GazeboSystem</plugin> -->
+            <plugin>smash_it/SmashItBotSystemHardware</plugin>            
+        </hardware>
+        
+        
+        <!-- Actuated Joints -->
+        <joint name="rear_left_joint">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        
+        <joint name="rear_right_joint">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        
+        <joint name="front_left_joint">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />
+        </joint>
+        
+        <joint name="front_right_joint">
+            <command_interface name="velocity">
+                <param name="min">-10</param>
+                <param name="max">10</param>
+            </command_interface>
+            <state_interface name="position" />
+            <state_interface name="velocity" />            
+        </joint>
+
+
+
+        <!-- ACTUATED JOINTS -->   
+        
+        <!-- Front Left Wheel Rollers-->     
+        <joint name="r_joint_1_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>        
+        <joint name="r_joint_2_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_3_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_4_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_5_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_6_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_7_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_8_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_9_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_10_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_11_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_12_front_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        
+
+        <!-- Front Right Wheel Rollers-->     
+        <joint name="r_joint_1_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>        
+        <joint name="r_joint_2_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_3_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_4_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_5_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_6_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_7_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_8_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_9_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_10_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_11_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_12_front_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        
+        <!-- Rear Left Wheel Rollers-->     
+        <joint name="r_joint_1_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>        
+        <joint name="r_joint_2_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_3_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_4_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_5_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_6_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_7_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_8_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_9_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_10_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_11_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_12_rear_left_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+                
+        
+        <!-- Rear Right Wheel Rollers-->     
+        <joint name="r_joint_1_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>        
+        <joint name="r_joint_2_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_3_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_4_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_5_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_6_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_7_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_8_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_9_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_10_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_11_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>
+        <joint name="r_joint_12_rear_right_link">           
+<!--            <state_interface name="position" /> -->
+        </joint>                    
+    
+    </ros2_control>
+    
+    
+  </xacro:macro>
+
+</robot>
