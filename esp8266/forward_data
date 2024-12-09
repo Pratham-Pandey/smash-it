@@ -1,0 +1,70 @@
+// To receive commadn from PC and glow onboard LED accordingly. Also send the received command to pico simultaneously.
+
+#include <ESP8266WiFi.h>
+
+const char* ssid = "****";
+const char* password = "**************";
+
+int count = 0;
+
+const int ledPin = 2; // GPIO2 (D4 on NodeMCU)
+
+WiFiServer server(12345); // Port number
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.softAP(ssid, password);
+  //Serial.println("ESP8266 is ready");
+
+  server.begin();
+
+  // Initialize the LED pin as an output
+  pinMode(ledPin, OUTPUT); // NOTE :Pin 2 is the onboard led.
+}
+
+void loop() {
+  WiFiClient client = server.available();
+  if (client) {
+    while (client.connected()) {
+      if (client.available()) {
+        count++;
+        String message = client.readStringUntil('~');
+        //Serial.println("Received: " + message);
+        Serial.print(message + "~");
+        //client.println("Hello from ESP8266 " + String(count));
+
+        float wheel_1 = message.substring(0,5).toFloat();
+        float wheel_2 = message.substring(5, 10).toFloat();
+
+        //Serial.println(wheel_1);
+        //Serial.println(wheel_2);
+
+        if (wheel_1 > 0.5){
+          //Serial.println("ON");
+          digitalWrite(ledPin, LOW);  
+        }else{
+          //Serial.println("OFF");
+          digitalWrite(ledPin, HIGH);  
+        }
+
+        // Turn the LED on
+        // digitalWrite(ledPin, HIGH);
+        // delay(250); 
+        // // Turn the LED off
+        // digitalWrite(ledPin, LOW);
+        // delay(250);
+
+      }
+      //delay(500);
+    }
+    client.stop();
+    Serial.println("Client disconnected");
+  }  else {
+    // No client connected, wait and check again
+    Serial.println("Waiting for client...");
+    //delay(1000);
+
+    //NOTE: Adding both delay of 500 + 500 means wait of 1 second before checkign for connection again.
+  }
+}
+
