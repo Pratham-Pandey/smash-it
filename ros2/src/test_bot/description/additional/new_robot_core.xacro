@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="inertial_macros.xacro" />
+    
+    <!-- Colors -->
+    <material name="purple">
+        <color rgba="0.5 0 0.5 1"/>
+    </material>    
+    
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>    
+    
+                
+    <!-- Chassis Properties -->
+    <xacro:property name="chassis_width" value="0.6"/>       <!-- 6 meter = 600 cm -->
+    <xacro:property name="chassis_height" value="0.6"/>      <!-- 6 meter = 600 cm -->
+    <xacro:property name="chassis_depth" value="0.02"/>      <!-- 0.02meter = 2 cm -->
+    <xacro:property name="chassis_mass" value="1"/>          <!-- 1 kg -->
+    
+    <!-- Wheel Properties -->
+    <xacro:property name="wheel_radius" value="0.05"/>
+    <xacro:property name="wheel_width" value="0.02"/>
+    <xacro:property name="wheel_mass" value="1"/>
+    
+    <!-- Wheel Macro -->
+    <xacro:macro name="wheel_macro" params="wheel_name wheel_color mu1 mu2 type">    <!-- mu max_val = 1 (max friction) min_val = 0(min friction) -->
+        <link name="${wheel_name}">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                   <cylinder length="${wheel_width}" radius="${wheel_radius}" /> 
+                   <!-- <mesh filename="/home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/Type${type}_Wheel.stl" scale="0.001 0.001 0.001"/> -->              
+                </geometry>
+                <material name="white"/>
+            </visual>        
+            
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder length="${wheel_width}" radius="${wheel_radius}" /> 
+                </geometry>
+            </collision>
+            
+            <xacro:inertial_cylinder mass="${wheel_mass}" length="${wheel_width}" radius="${wheel_radius}">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_cylinder>
+        </link>
+        
+        <gazebo reference="${wheel_name}">
+            <material>${wheel_color}</material>
+            
+            <mu1 value="${mu1}"/>
+            <mu2 value="${mu2}"/>    
+        </gazebo>
+            
+    </xacro:macro>
+           
+               
+    <!-- BASE LINK -->
+    <link name="base_link">
+    </link>
+    
+    <!-- Chassis Link -->
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis_link"/>
+        <origin xyz="0 0 0.06"/>    <!-- xyz = 0, 0, height_to_raise + chassis_depth/2 -->
+    </joint>
+    
+    <link name="chassis_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${chassis_width} ${chassis_height} ${chassis_depth}"/>
+            </geometry>
+            <material name="purple"/>
+        </visual>
+        
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${chassis_width} ${chassis_height} ${chassis_depth}"/>
+            </geometry>
+        </collision>
+        
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_width}" y="${chassis_height}" z="${chassis_depth}"> 
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+    
+    <gazebo reference="chassis_link">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+    
+    
+    <!-- Front Left Wheel -->    
+    <!-- <joint name="front_left_joint" type="continuous"> -->
+    <joint name="dummy_left_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="front_left_link" />
+        <origin xyz="0.3 0.32 0" rpy="${pi/2} 0 0" />
+        <axis xyz="0 0 -1"/>
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="front_left_link" wheel_color="Gazebo/Green" mu1="0.0" mu2="0.0" type="2"/>
+    
+    
+    <!-- Front Right Wheel -->
+    <!-- <joint name="front_right_joint" type="continuous"> -->
+    <joint name="dummy_right_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="front_right_link" />
+        <origin xyz="0.3 -0.32 0" rpy="${pi/2} 0 0" />
+        <axis xyz="0 0 -1"/>
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="front_right_link" wheel_color="Gazebo/Green" mu1="0.0" mu2="0.0" type="1"/>
+    
+    <!-- Rear Left Wheel -->
+    <!-- <joint name="rear_left_joint" type="continuous"> -->
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="rear_left_link" />
+        <origin xyz="-0.3 0.32 0" rpy="${pi/2} 0 0" />
+        <axis xyz="0 0 -1"/>
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="rear_left_link" wheel_color="Gazebo/Yellow" mu1="0.0" mu2="0.0" type="1"/>
+    
+    <!-- Rear Right Wheel -->
+    <!-- <joint name="rear_right_joint" type="continuous"> -->
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="rear_right_link" />
+        <origin xyz="-0.3 -0.32 0" rpy="${pi/2} 0 0" />    
+        <axis xyz="0 0 -1"/>    
+        <!-- 0.3 (half chassis width) + 0.01 (half tyer width) + 0.01 (safety margin). -->
+        
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="rear_right_link" wheel_color="Gazebo/Yellow" mu1="0.0" mu2="0.0" type="2"/>
+    
+</robot>

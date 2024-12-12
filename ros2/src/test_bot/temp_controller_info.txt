@@ -1,0 +1,13 @@
+/joint_trajectory_position_controller/controller_state --> control_msgs/msg/JointTrajectoryControllerState
+
+/joint_trajectory_position_controller/joint_trajectory --> trajectory_msgs/msg/JointTrajectory
+
+/joint_trajectory_position_controller/transition_event --> lifecycle_msgs/msg/TransitionEvent
+
+ros2 topic pub /joint_trajectory_position_controller/joint_trajectory trajectory_msgs/msg/JointTrajectory '{header: {stamp: {sec: 0, nanosec: 0}, frame_id: "base_link"}, joint_names: ["base_link_x_y", "base_link_y_z", "base_link_z_1", "l3_joint"], points: [{positions: [0.0, 0.5, 0.1, 0.5], velocities: [0.0, 0.0, 0.0, 0.0], accelerations: [0.0, 0.0, 0.0, 0.0], time_from_start: {sec: 2, nanosec: 0}}]}'
+
+
+ros2 topic pub /joint_trajectory_position_controller/joint_trajectory trajectory_msgs/msg/JointTrajectory '{header: {stamp: {sec: 0, nanosec: 0}, frame_id: "base_link"}, joint_names: ["base_link_x_y", "base_link_y_z", "base_link_z_1", "l3_joint"], points: [{positions: [0.0, 0.0, 0.0, 0.0], velocities: [0.0, 0.0, 0.0, 0.0], accelerations: [0.0, 0.0, 0.0, 0.0], time_from_start: {sec: 2, nanosec: 0}}]}' --once
+
+
+["base_link_x_y", "base_link_y_z", "base_link_z_1", "l3_joint", "l4_joint"]

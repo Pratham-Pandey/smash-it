@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="ball_1"> 
+    <!-- Variables -->
+    <xacro:property name="ball_radius" value="0.05"/>
+    <xacro:property name="ball_mass" value="0.001"/>
+
+    
+    <!-- MATERIALS -->    
+    <material name="orange">
+      <!-- <color rgba="${255/255} ${108/255} ${10/255} 1.0"/> -->
+      <color rgba="${255.0/255.0} ${108.0/255.0} ${10.0/255.0} 1.0"/>
+    </material>
+    
+    <!-- BASE LINK -->    
+    <link name="base_link"/>        
+    
+    <joint name="joint_1" type="fixed">
+        <parent link="base_link"/>
+        <child link="link_1"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>        
+        <!--<axis xyz="0 0 0"/> -->
+    </joint>    
+
+    <!-- Ball -->
+    <link name="link_1">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <sphere radius="${ball_radius}"/>    
+            </geometry>            
+            <material name="orange"/>
+        </visual>
+        
+        <collision>
+            <geometry>
+                <sphere radius="${ball_radius}"/>    
+            </geometry>                                    
+        </collision>
+        
+        
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>            
+            <mass value="${ball_mass}" />
+            <inertia ixx="${(2/5) * ball_mass * (ball_radius*ball_radius)}" ixy="0.0" ixz="0.0"
+                    iyy="${(2/5) * ball_mass * (ball_radius*ball_radius)}" iyz="0.0"
+                    izz="${(2/5) * ball_mass * (ball_radius*ball_radius)}" />
+        </inertial>
+                
+    </link>   
+    
+    <gazebo reference="link_1">
+        <material>Gazebo/Orange</material>
+        
+        <!-- Bounce Effect -->       
+        
+        <!-- 
+        <maxVel value="100.0"/>       
+        <kp value="100000000.0" />
+
+        <kd value="1.0" />
+        -->
+
+        
+        <maxVel value="1000.0"/>       
+        <kp value="10000000000.0" />
+        <kd value="0.0" />
+    
+        
+        <mu1 value="0.0" />
+        <mu2 value="0.0" />            
+                        
+        <!-- Plugin for apply_body_wrench -->
+        <!--
+        <plugin filename="libgazebo_ros_force.so" name="gazebo_ros_force">
+          <bodyName>link_1</bodyName>
+          <topicName>/box_force</topicName>
+        </plugin>
+        -->
+        
+    
+          
+      <!--  
+        <mu1 value="100.0" />
+        <mu2 value="0.1" />    
+
+        <surface>
+            <bounce restitution_coefficient="1.0" threshold="0.01"/>
+        </surface>
+        
+               
+        <maxVel value="10.0"/>
+                
+        <kp value="100000000.0" />
+        <kd value="1.0" />
+        
+        <fdir1 value="1 0 0" />
+        -->
+        
+    </gazebo>
+    
+        
+
+
+</robot>

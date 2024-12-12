@@ -1,0 +1,273 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="inertial_macros.xacro" />
+    
+    <!-- Colors -->
+    <material name="purple">
+        <color rgba="0.5 0 0.5 1"/>
+    </material>    
+    
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>    
+    
+                
+    <!-- Chassis Properties -->
+    <xacro:property name="chassis_width" value="0.6"/>       <!-- 6 meter = 600 cm -->
+    <xacro:property name="chassis_height" value="0.6"/>      <!-- 6 meter = 600 cm -->
+    <xacro:property name="chassis_depth" value="0.02"/>      <!-- 0.02meter = 2 cm -->
+    <xacro:property name="chassis_mass" value="1"/>          <!-- 1 kg -->
+    
+    <!-- Wheel Properties -->
+    <xacro:property name="wheel_radius" value="0.02"/>       <!-- DEFAULT: 0.05 -->
+    <xacro:property name="wheel_width" value="0.02"/>
+    <xacro:property name="wheel_mass" value="1"/>
+    
+    <!-- Roller Macro -->
+    <xacro:macro name="roller_macro" params="sno parent_link x y z roll pitch yaw">
+               
+                                          
+        <!-- Roller Link -->    
+        <link name="roll_${sno}">
+            
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                   <!-- <cylinder length="0.05" radius="0.02" /> -->
+                   <mesh filename="file:///home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/exported/roller_M1-Body001.stl" scale="0.001 0.001 0.001"/>            
+                </geometry>
+                <material name="white"/>
+            </visual>        
+            
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <!-- <cylinder length="0.05" radius="0.02" /> -->                                  
+                    <mesh filename="file:///home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/exported/roller_M1-Body001.stl" scale="0.001 0.001 0.001"/>
+                </geometry>
+            </collision>
+            
+            <xacro:inertial_cylinder mass="0.0001" length="0.0001" radius="0.0001">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_cylinder>
+            
+        </link>
+        
+        <gazebo reference="roll_${sno}">
+            <material>Gazebo/Yellow</material>
+        </gazebo>
+        
+        <joint name="r_joint_${sno}" type="continuous">
+            <parent link="${parent_link}" />
+            <child link="roll_${sno}" />
+            <origin xyz="${x} ${y} ${z}" rpy="${roll} ${pitch} ${yaw}" />
+            <axis xyz="0 0 1"/>
+        </joint>     
+         
+        
+    </xacro:macro>
+    
+    <!-- Roller Wheel Macro -->
+    <xacro:macro name="roller_wheel_macro" params="parent_link angle">
+            
+        
+        <!-- Wheel Point Joint -->
+        
+        <!--
+        <joint name="right_wheel_joint" type="continuous">
+            <parent link="chassis_link" />
+            <child link="point_wheel" />
+            <origin xyz="-0.3 -0.32 0" rpy="${-pi/2} ${-pi/2} 0" />    
+            <axis xyz="0 0 -1"/>    
+        </joint>
+        -->    
+        
+        <joint name="right_wheel_joint" type="continuous">
+            <parent link="chassis_link" />
+            <child link="rear_right_link" />
+            <origin xyz="-0.3 -0.32 0" rpy="${pi/2} 0 0" />    
+            <axis xyz="0 0 -1"/>    
+            
+        </joint>
+            
+        <!-- Wheel Point Link -->
+        <xacro:wheel_macro wheel_name="${parent_link}" wheel_color="Gazebo/Yellow" mu1="0.0" mu2="0.0" type="1"/>                                 
+
+        <!-- Roller_1 -->              
+        <xacro:roller_macro sno="1" parent_link="${parent_link}" x="0.05" y="0.0" z="0.0" roll="${angle}" pitch="0.0" yaw="0.0" />
+        
+        <!-- <xacro:roller_macro name="roll_1" joint_name="rj1" parent_link="point_wheel" x="0.05" y="0.0" z="0.0" roll="0.528" pitch="0.209" yaw=" 2.467" /> -->
+        
+        <!-- Roller_2 -->
+        <xacro:roller_macro sno="2" parent_link="${parent_link}" x="0.03830" y="0.03214" z="0.0" roll="${angle}" pitch="0.0" yaw="0.698" />
+
+        <!-- Roller_3 -->
+        <xacro:roller_macro sno="3" parent_link="${parent_link}" x="0.00868" y="0.04924" z="0.0" roll="${angle}" pitch="0.0" yaw="1.396" />
+        
+        <!-- Roller_4 -->
+        <xacro:roller_macro sno="4" parent_link="${parent_link}" x="-0.02500" y="0.04330" z="0.0" roll="${angle}" pitch="0.0" yaw="2.094" />
+
+        <!-- Roller_5 -->
+        <xacro:roller_macro sno="5" parent_link="${parent_link}" x="-0.04698" y="0.01710" z="0.0" roll="${angle}" pitch="0.0" yaw="2.793" />    
+
+        <!-- Roller_6 -->
+        <xacro:roller_macro sno="6" parent_link="${parent_link}" x="-0.04698" y="-0.01710" z="0.0" roll="${angle}" pitch="0.0" yaw="3.491" />
+        
+        <!-- Roller_7 -->
+        <xacro:roller_macro sno="7" parent_link="${parent_link}" x="-0.02500" y="-0.04330" z="0.0" roll="${angle}" pitch="0.0" yaw="4.189" />
+        
+        <!-- Roller_8 -->
+        <xacro:roller_macro sno="8" parent_link="${parent_link}" x="0.00868" y="-0.04924" z="0.0" roll="${angle}" pitch="0.0" yaw="4.887" />
+        
+        <!-- Roller_9 -->
+        <xacro:roller_macro sno="9" parent_link="${parent_link}" x="0.03830" y="-0.03214" z="0.0" roll="${angle}" pitch="0.0" yaw="5.585" />
+
+      
+        <!-- SAVES 
+        <xacro:roller_macro sno="1" x="0.05" y="0.0" z="0.0" roll="0.0" pitch="0" yaw="0.0" />               
+        <xacro:roller_macro sno="2" x="0.03830" y="0.03214" z="0.0" roll="-0.698" pitch="${pi/2}" yaw="0.0" />
+        <xacro:roller_macro sno="3" x="0.00868" y="0.04924" z="0.0" roll="-1.396" pitch="${pi/2}" yaw="0.0" />
+        <xacro:roller_macro sno="4" x="-0.02500" y="0.04330" z="0.0" roll="-2.094" pitch="${pi/2}" yaw="0.0" />
+        <xacro:roller_macro sno="5" x="-0.04698" y="0.01710" z="0.0" roll="-2.793" pitch="${pi/2}" yaw="0.0" />    
+        <xacro:roller_macro sno="6" x="-0.04698" y="-0.01710" z="0.0" roll="-3.491" pitch="${pi/2}" yaw="0.0" />
+        <xacro:roller_macro sno="7" x="-0.02500" y="-0.04330" z="0.0" roll="-4.189" pitch="${pi/2}" yaw="0.0" />
+        <xacro:roller_macro sno="8" x="0.00868" y="-0.04924" z="0.0" roll="-4.887" pitch="${pi/2}" yaw="0.0" />
+        <xacro:roller_macro sno="9" x="0.03830" y="-0.03214" z="0.0" roll="-5.585" pitch="${pi/2}" yaw="0.0" />
+        -->              
+        
+    </xacro:macro>
+
+        
+        
+        
+    <!-- Wheel Macro -->
+    <xacro:macro name="wheel_macro" params="wheel_name wheel_color mu1 mu2 type">    <!-- mu max_val = 1 (max friction) min_val = 0(min friction) -->
+        <link name="${wheel_name}">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                   <cylinder length="${wheel_width}" radius="${wheel_radius}" /> 
+                   <!-- <mesh filename="/home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/Type${type}_Wheel.stl" scale="0.001 0.001 0.001"/> -->              
+                </geometry>
+                <material name="white"/>
+            </visual>        
+            
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <cylinder length="${wheel_width}" radius="${wheel_radius}" /> 
+                </geometry>
+            </collision>
+            
+            <xacro:inertial_cylinder mass="${wheel_mass}" length="0.02" radius="0.05">
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+            </xacro:inertial_cylinder>
+        </link>
+        
+        <gazebo reference="${wheel_name}">
+            <material>${wheel_color}</material>
+            
+            <mu1 value="${mu1}"/>
+            <mu2 value="${mu2}"/>    
+        </gazebo>
+            
+    </xacro:macro>
+           
+               
+    <!-- BASE LINK -->
+    <link name="base_link">
+    </link>
+    
+    <!-- Chassis Link -->
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis_link"/>
+        <origin xyz="0 0 0.06"/>    <!-- xyz = 0, 0, height_to_raise + chassis_depth/2 -->
+    </joint>
+    
+    <link name="chassis_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${chassis_width} ${chassis_height} ${chassis_depth}"/>
+            </geometry>
+            <material name="purple"/>
+        </visual>
+        
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="${chassis_width} ${chassis_height} ${chassis_depth}"/>
+            </geometry>
+        </collision>
+        
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_width}" y="${chassis_height}" z="${chassis_depth}"> 
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+    
+    <gazebo reference="chassis_link">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+    
+    
+    <!-- Front Left Wheel -->    
+    <!-- <joint name="front_left_joint" type="continuous"> -->
+    <joint name="dummy_left_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="front_left_link" />
+        <origin xyz="0.3 0.32 0" rpy="${pi/2} 0 0" />
+        <axis xyz="0 0 -1"/>
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="front_left_link" wheel_color="Gazebo/Green" mu1="0.0" mu2="0.0" type="2"/>
+    
+    
+    <!-- Front Right Wheel -->
+    <!-- <joint name="front_right_joint" type="continuous"> -->
+    <joint name="dummy_right_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="front_right_link" />
+        <origin xyz="0.3 -0.32 0" rpy="${pi/2} 0 0" />
+        <axis xyz="0 0 -1"/>
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="front_right_link" wheel_color="Gazebo/Green" mu1="0.0" mu2="0.0" type="1"/>
+    
+    <!-- Rear Left Wheel -->
+    <!-- <joint name="rear_left_joint" type="continuous"> -->
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="rear_left_link" />
+        <origin xyz="-0.3 0.32 0" rpy="${pi/2} 0 0" />
+        <axis xyz="0 0 -1"/>
+        <!-- 0.3 (half chassis width) + 0.01 (half tyer width) + 0.01 (safety margin). -->
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="rear_left_link" wheel_color="Gazebo/Yellow" mu1="0.0" mu2="0.0" type="1"/>
+    
+    <!-- Rear Right Wheel -->
+    <!-- <joint name="rear_right_joint" type="continuous"> -->
+    
+    <!-- 
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="chassis_link" />
+        <child link="rear_right_link" />
+        <origin xyz="-0.3 -0.32 0" rpy="${pi/2} 0 0" />    
+        <axis xyz="0 0 -1"/>    
+        
+    </joint>
+    
+    <xacro:wheel_macro wheel_name="rear_right_link" wheel_color="Gazebo/Yellow" mu1="0.0" mu2="0.0" type="2"/>
+    -->
+    
+    <!-- Roller _wheel -->
+    
+    <xacro:roller_wheel_macro parent_link="rear_right_link" angle="${pi/4}" />        <!-- 2 options for angle ${pi/4} or ${-pi/4} -->
+    
+    
+    
+    
+    
+    
+</robot>

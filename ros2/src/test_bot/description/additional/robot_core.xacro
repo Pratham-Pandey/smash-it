@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="inertial_macros.xacro" />
+    <material name="white">
+        <color rgba="1 1 1 1"/>
+    </material>
+
+    <material name="orange">
+        <color rgba="1 0.3 0.1 1"/>
+    </material>
+
+    <material name="blue">
+        <color rgba="0.2 0.2 1 1"/>
+    </material>
+
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
+    
+    
+    <!-- BASE LINK -->
+    <link name="base_link">
+    </link>
+    
+    <!-- CHASSIS LINK -->
+    
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis"/>
+        <origin xyz="0 0 0.07"/>
+    </joint>
+
+    <link name="chassis">
+        <visual>
+            <origin xyz="0.0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6 0.6 0.1"/>
+                <!-- <mesh filename="/home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/base_plate/base_plate-Body.stl" scale="0.001 0.001 0.001"/> -->
+            </geometry>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6 0.6 0.1"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="0.5" x="0.6" y="0.6" z="0.1">
+            <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+    
+    <gazebo reference="chassis">
+        <material>Gazebo/Purple</material>
+    </gazebo>
+    
+    <!-- LEFT WHEEL -->
+
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_wheel"/>
+        <origin xyz="-0.3 0.35 0.02" rpy="${pi/2} 0 0"/>
+        <!-- <axis xyz="0 0 1"/> -->
+        <axis xyz="0 0 -1"/>
+    </joint>
+
+    <link name="left_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" />
+                <!-- <mesh filename="/home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/Type2_Wheel.stl" scale="0.001 0.001 0.001"/> -->
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        
+        <collision>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" />
+            </geometry>
+        </collision>
+        
+        <xacro:inertial_cylinder mass="0.1" length="0.05" radius="0.04">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+    
+    <gazebo reference="left_wheel">
+        <material>Gazebo/Yellow</material>
+        <!--
+        <mu1 value="0.000"/>
+        <mu2 value="0.000"/>
+        -->
+    </gazebo>
+    
+    <!-- RIGHT WHEEL -->
+
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_wheel"/>
+        <origin xyz="-0.3 -0.35 0.02" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+    </joint>
+
+    <link name="right_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" /> 
+                <!-- <mesh filename="/home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/Type1_Wheel.stl" scale="0.001 0.001 0.001"/> -->
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" />
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.05" radius="0.04">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <gazebo reference="right_wheel">
+        <material>Gazebo/Yellow</material>
+        <!--
+        <mu1 value="0.000"/>
+        <mu2 value="0.000"/>
+        -->
+    </gazebo>
+    
+    
+    <!-- DUMMY LEFT WHEEL -->
+
+    <joint name="dummy_left_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="dummy_left"/>
+        <origin xyz="0.3 0.35 0.02" rpy="-${pi/2} 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="dummy_left">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" />
+                <!-- <mesh filename="/home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/Type1_Wheel.stl" scale="0.001 0.001 0.001"/> -->
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        
+        <collision>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" />
+            </geometry>
+        </collision>
+        
+        <xacro:inertial_cylinder mass="0.1" length="0.05" radius="0.04">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+    
+    <gazebo reference="dummy_left">
+        <material>Gazebo/Blue</material>
+        
+        <mu1 value="0.000"/>
+        <mu2 value="0.000"/>
+      
+    </gazebo>
+    
+    <!-- DUMMY RIGHT WHEEL -->
+
+    <joint name="dummy_right_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="dummy_right"/>
+        <origin xyz="0.3 -0.35 0.02" rpy="-${pi/2} 0 0"/>
+        <!-- <axis xyz="0 0 -1"/> -->
+        <axis xyz="0 0 1"/>
+    </joint>
+
+    <link name="dummy_right">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" />
+                <!-- <mesh filename="/home/pratham/Desktop/robotics/projects/smash_it/CAD_Models/mec_model/Type2_Wheel.stl" scale="0.001 0.001 0.001"/>  -->
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.04" radius="0.04" />
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.05" radius="0.04">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+
+    <gazebo reference="dummy_right">
+        <material>Gazebo/Blue</material>
+        
+        <mu1 value="0.000"/>
+        <mu2 value="0.000"/>
+     
+    </gazebo>
+    
+
+        
+    <!-- CASTER WHEEL -->
+    
+    <!--
+    <joint name="caster_wheel_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="caster_wheel"/>
+        <origin xyz="0.2 0 0.02" rpy="0 0 0"/>
+    </joint>
+
+    <link name="caster_wheel">
+        <visual>
+            <geometry>
+                <sphere radius="0.04" />
+            </geometry>
+            <material name="black"/>
+        </visual>
+        
+        <collision>
+            <geometry>
+                <sphere radius="0.04" />
+            </geometry>
+            <material name="black"/>
+        </collision>
+        
+        <xacro:inertial_sphere mass="0.1" radius="0.04">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_sphere>
+    </link>
+    
+    <gazebo reference="caster_wheel">
+        <material>Gazebo/Yellow</material>
+        <mu1 value="0.00"/>
+        <mu2 value="0.00"/>
+    </gazebo>
+    
+    -->
+</robot>

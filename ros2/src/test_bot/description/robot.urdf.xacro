@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"  name="smash_bot">
+    
+<!-- Core Files -->
+<!-- <xacro:include filename="robot_core.xacro" /> -->      <!-- Not Useful as it has seprate defination of each wheel instead of using wheel macro -->
+<!-- <xacro:include filename="new_robot_core.xacro" /> -->
+<xacro:include filename="mec_robot_core.xacro" />
+
+<!-- Controllers -->
+<!-- <xacro:include filename="gazebo_control.xacro" /> -->
+<xacro:include filename="ros2_control.xacro" /> 
+<!-- <xacro:include filename="ros2_arm_control.xacro" /> -->
+
+</robot>
