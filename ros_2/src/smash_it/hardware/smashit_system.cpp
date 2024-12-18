@@ -151,7 +151,7 @@ hardware_interface::return_type smash_it ::SmashItBotSystemHardware::write(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
   // RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Writing: %.5f", hw_commands_[0]);
-  RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Writing: %f    %f", hw_commands_[0], hw_commands_[1]);
+  RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Writing: %f    %f    %f    %f", hw_commands_[0], hw_commands_[1], hw_commands_[2], hw_commands_[3]);
   //RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "No of Joints: %d", info_.joints);
   // for (auto i = 0u; i < hw_commands_.size(); i++)
 

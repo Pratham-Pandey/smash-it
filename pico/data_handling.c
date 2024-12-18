@@ -12,6 +12,7 @@
 
 
 
+// To drive all 4 motors at the same time. The command will be received from pc via wifi using ESP8266.
 
 #include "pico/stdlib.h"
 #include "pico/multicore.h"
@@ -196,24 +197,35 @@ int main(){
         }
 
         char read_buff[128];
+
+        char temp_buff[20];
+
         int len = 0;
 
         while ((len<sizeof(read_buff)-1)){
             int c = getchar_timeout_us(0);
-            
-            if (c == '~'){
-                //printf("Data: %s\n", read_buff);
-                break;
-            }            
-            else{
-                read_buff[len++] = c;
+
+            if (c >= 0){            // To check whether valid data has been received from the UART
+                if (c == '~'){
+                    //printf("Data: %s\n", read_buff);
+                    break;
+                }            
+                else{
+                    read_buff[len++] = c;
+                }
             }
 
         }
         
         // Null-terminate the string received
+        // read_buff[len++] = '%';
         read_buff[len] = '\0';
-        printf("Received: %s\n", read_buff);
+        // printf("Received: %s\n", read_buff);
+
+        strncpy(temp_buff, read_buff + strlen(read_buff) -20, 20);
+        temp_buff[20] = '\0';
+
+        printf("%s\n", temp_buff);
 
 
         // printf("Received: %s \n", read_buff);
@@ -232,10 +244,16 @@ int main(){
             // * https://stackoverflow.com/questions/16807004/how-to-get-a-part-of-a-char-array-in-c
             // * https://cstdspace.quora.com/What-is-the-difference-between-strncpy-and-strcpy-for-strings-in-C-programming-language?top_ans=386912167
             
-            strncpy(front_left_char, read_buff, 5);
-            strncpy(front_right_char, read_buff + 5, 5);
-            strncpy(rear_left_char, read_buff + 10, 5);
-            strncpy(rear_right_char, read_buff + 15, 5);
+
+            strncpy(front_left_char, temp_buff, 5);
+            strncpy(front_right_char, temp_buff + 5, 5);
+            strncpy(rear_left_char, temp_buff + 10, 5);
+            strncpy(rear_right_char, temp_buff + 15, 5);
+
+            // strncpy(front_left_char, read_buff, 5);
+            // strncpy(front_right_char, read_buff + 5, 5);
+            // strncpy(rear_left_char, read_buff + 10, 5);
+            // strncpy(rear_right_char, read_buff + 15, 5);
             
             front_left_char[5] = '\0';
             front_right_char[5] = '\0';
@@ -390,6 +408,4 @@ int main(){
         }
 
 }
-
-
 

@@ -1,9 +1,9 @@
-// To receive commadn from PC and glow onboard LED accordingly. Also send the received command to pico simultaneously.
+// To receive commadn from PC and glow onboard LED accordingly. Alsso ssend the revveceived command to pico simultaneously.
 
 #include <ESP8266WiFi.h>
 
-const char* ssid = "****";
-const char* password = "**************";
+const char* ssid = "Nice";
+const char* password = "@)3!!EppsaLC*^5.";
 
 int count = 0;
 
