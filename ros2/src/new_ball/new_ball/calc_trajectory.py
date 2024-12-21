@@ -11,7 +11,7 @@ class GetPose(Node):
     def __init__(self):
         super().__init__('get_pose')
         
-        # To keep track of number of times the trajectory of a ball has been publisshed.
+        # To keep track of number of times the trajectory of a ball has been published
         self.pub_count = 0
         
         # Ball coordinates
@@ -50,7 +50,7 @@ class GetPose(Node):
                     
                     # Time to hit
                     #y_nearest = 0.0      # This is the point at which we need to hit the ball. Change it as per robot placement in the environment.
-                    # To get pposition of the robot
+                    # To get position of the robot
                     bot_index = msg.name.index("nice_bot")        
                     bot_x = msg.pose[bot_index].position.x
                     bot_y = msg.pose[bot_index].position.y
@@ -63,9 +63,10 @@ class GetPose(Node):
                     # x_data, y_data, z_data = self.get_initial_trajectory(0.64, 0.95, x_vel, y_vel, z_vel, self.x_pose[-1], self.y_pose[-1], self.z_pose[-1])
                     
                     #print("Velocity(x, y, z), Position(x, y, z): ", x_vel, y_vel, z_vel, self.x_pose[-1], self.y_pose[-1], self.z_pose[-1])
-                    #print("X_data: ", x_data)
-                    #print("Y_data: ", y_data)                
-                    #print("Z_data: ", z_data)                
+                    # print("Predicted Trajectory:")
+                    # print("X_data: ", x_data)
+                    # print("Y_data: ", y_data)
+                    # print("Z_data: ", z_data)
                     
                     nearest_index, distances = self.find_closest_element(x_data, y_data, z_data, np.array([bot_x, bot_y]))
                     
@@ -73,25 +74,27 @@ class GetPose(Node):
                     #print("Output: ", nearest_index[0] * point_time, type(nearest_index[0] * point_time)) 
                                         
                     # t_hit = ([nearest_index[0] * point_time]) - 0.05    # Output in seconds. "-0.05" to account for the time elapsed after the second last point.                        
-                    t_hit = (nearest_index[0] * point_time) - 0.05
-                    
+                    # t_hit = (nearest_index[0] * point_time) - 0.05                  # I think we also need to subtract time which has elapsed from begning to the point where we predict ball trajectory.
+                    t_hit = ((nearest_index[0] - len(self.z_pose)) * point_time) - 0.05       # Here len(z_pose) will be used to count elapsed time.
+
                     arm_x_goal = x_data[nearest_index[0]]
                     arm_y_goal = y_data[nearest_index[0]]
                     arm_z_goal = z_data[nearest_index[0]]
                 
-                    print("Bot Current XY: ", bot_x, bot_y)
+                    #print("Bot Current XY: ", bot_x, bot_y)
                     
                     # if (distances[0] > self.arm_length):
 
                     if (distances[0] > (self.arm_length) or distances[0] < (self.arm_length - 0.2)):
-                    # We will consider a sphere(3D) around the goal with a radius equal to the arm length. Now the edge of this sphere are the points through which the arm can reach the ball(goal point). But the mobile base cannot reach all the points on the edge of the sphere because it is fixed with at z to 0(z=0). Therefore we will look for those points of the generated sphere which are having z=0. 
+                    # We will consider a sphere(3D) around the goal with a radius equal to the arm length. Now the edge of this sphere are the points through which the arm can reach the ball(goal point). But the mobile base cannot reach all the points on the edge of the sphere because it is fixed on ground(z=0). Therefore we will look for those points of the generated sphere which are having z=0.
                         
 #                   (gx - x)^2 + (gy - y)^2 + (gz-0)^2 = r^2    # Equation of a 3D Sphere.
 #                   (gx - x)^2 + (gy - y)^2 = r^2 - (gz-0)^2    # Solving it converts it to equation of a 2D sphere. 
 #                   Radius_2D_Circle = root(r^2 - (gz-0)^2)     # Radius of the circle formed when the 3D sphere intersects the plane(z=0).                      
-#                   Next we could generate the coordinate at 2 points of this circle. first at 0 degree and second at 180 degree(only these 2 points because be want to hit the ball from exactally left or right side).                    
+#                   Next we could generate the coordinate at 2 points of this circle. first at 0 degree and second at 180 degree(only these 2 points because be want to hit the ball from exactly left or right side).
 
-                        theta = [0, 180]    
+                        # theta = [0, 180]
+                        theta = [0, np.pi]
                         bot_goal = []
                         
                         radius_2d_circle = math.sqrt(self.arm_length**2 - (0 - z_data[nearest_index[0]])**2)
@@ -100,7 +103,7 @@ class GetPose(Node):
                             temp_x_goal = x_data[nearest_index[0]] + radius_2d_circle * np.cos(i)                       
                             temp_y_goal = y_data[nearest_index[0]] + radius_2d_circle * np.sin(i)
                             temp_z_goal = 0      # Means the mobile robot is on ground.
-                            bot_goal.append((temp_x_goal, temp_y_goal, temp_z_goal))   # After adding data at both the points(0, 180 degree),we will calculate distance of actual mobile base position to these points and will select the point closest.
+                            bot_goal.append((temp_x_goal, temp_y_goal, temp_z_goal))   # After adding data at both the points(0, 180 degree),we will calculate distance of actual mobile base position to these points and will select the closest point.
                         
                         dist_p1_0 = np.sqrt((bot_x - bot_goal[0][0])**2 + (bot_y - bot_goal[0][1])**2) 
                         dist_p2_180 = np.sqrt((bot_x - bot_goal[1][0])**2 + (bot_y - bot_goal[1][1])**2)                        
@@ -122,11 +125,12 @@ class GetPose(Node):
                         bot_z_goal = "10000.0"                                                
                     
                         
-                    # For veiwing
+                    # For viewing
                     print("Time to reach: ", t_hit)
-                    print("Mobile base to reach: ", bot_x_goal, bot_y_goal, bot_z_goal)                        
+                    print("Mobile base to reach: ", bot_x_goal, bot_y_goal, bot_z_goal)
                     print("Arm to reach: ", arm_x_goal, arm_y_goal, arm_z_goal)
 
+                    print("~~~~~~~~~~~~")
                     print("\n\n")
                 
                             
@@ -146,10 +150,10 @@ class GetPose(Node):
                     #z_goal = z_data[nearest_index]                                                                        
         
         else:
-            #print("\n\n\nActual Coordinates: ")  
-            #print("X:", self.x_pose.tolist())
-            #print("Y:", self.y_pose.tolist())
-            #print("Z:", self.z_pose.tolist())
+            # print("\n\n\nActual Coordinates: ")
+            # print("X:", self.x_pose.tolist())
+            # print("Y:", self.y_pose.tolist())
+            # print("Z:", self.z_pose.tolist())
             
             self.x_pose = np.array([])
             self.y_pose = np.array([])  
@@ -171,7 +175,7 @@ class GetPose(Node):
         y[idx] = 10000
         z[idx] = 10000
         
-        # And Those above arm length(as arm wont be able to reach it even if it is dirctly under it).
+        # And Those above arm length(as arm wont be able to reach it even if it is directly under it).
         idx = np.where(z > self.arm_length)[0]
         x[idx] = 10000
         y[idx] = 10000

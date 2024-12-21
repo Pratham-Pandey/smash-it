@@ -489,19 +489,24 @@ class GetLocation : public rclcpp::Node
             trajectory_msgs::msg::JointTrajectoryPoint traj_point;
             
             // First move to the point of contact.
-            traj_point.positions = {set_joint_position_(0), set_joint_position_(1), set_joint_position_(2), set_joint_position_(3)};
-            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2);
+            //traj_point.positions = {set_joint_position_(0), set_joint_position_(1), set_joint_position_(2), set_joint_position_(3)};
+            traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0, set_joint_position_(3)};
+            // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2);
+            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.7);
             traj.points.push_back(traj_point);
     
             // Next move arm back to generate force.
             // NOTE: These are like the coordinates to move to, not the amount to move by.
-            traj_point.positions = {set_joint_position_(0), set_joint_position_(1), set_joint_position_(2) , set_joint_position_(3) - 1.0};
-            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/4);
+            //traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0 , set_joint_position_(3) + 1.0};
+            traj_point.positions = {set_joint_position_(0) + 1.0, set_joint_position_(1) + 1.0, 0 , set_joint_position_(3)};
+            // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/4);
+            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.95);
             traj.points.push_back(traj_point);
 
             // Then move forward with speed.
-            traj_point.positions = {set_joint_position_(0), set_joint_position_(1), set_joint_position_(2), set_joint_position_(3)};
-            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/2);
+            traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0, set_joint_position_(3)};
+            // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/2);
+            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 1.1);
             traj.points.push_back(traj_point);
             
             // Publish Data 
