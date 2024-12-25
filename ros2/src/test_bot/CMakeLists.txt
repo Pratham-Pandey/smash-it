@@ -20,8 +20,10 @@ find_package(trajectory_msgs REQUIRED)
 find_package(gazebo_msgs REQUIRED)
 
 # add_executable(play src/play.cpp)
-add_executable(play src/play_v2.cpp)
 # add_executable(play src/play_basic.cpp)
+# add_executable(play src/play_v2.cpp)
+add_executable(play src/play_v3.cpp)
+# add_executable(play src/control_v2.cpp)
 
 ament_target_dependencies(play rclcpp std_msgs orocos_kdl_vendor kdl_parser sensor_msgs trajectory_msgs gazebo_msgs)
 

@@ -78,6 +78,54 @@ private:
 };
 */
 
+class PID
+{   
+    public:
+        // std::pair<double,double> PID()
+        PID()
+        {
+            error = std::pair(0.0, 0.0);
+            prev_error = std::pair(0.0, 0.0);
+
+            integral = std::pair(0.0, 0.0);
+            derivative = std::pair(0.0, 0.0);
+
+            kp = 10.0;
+            ki = 0.0;
+            kd = 0.0;
+        }
+
+        std::pair<double,double> process(std::vector<double> distance, double dt)
+        {
+            error.first = distance[0]; 
+            error.second = distance[1];
+
+            integral.first += error.first;
+            integral.second += error.second;
+
+            derivative.first = (error.first - prev_error.first) / dt;
+            derivative.second = (error.second - prev_error.second) / dt;
+
+            prev_error = error;
+
+            return std::pair(error.first * kp + integral.first * ki + derivative.first * kd, error.second * kp + integral.second * ki + derivative.second * kd );
+        }
+
+    
+    private:
+        std::pair<double, double> error;
+        std::pair<double, double> prev_error;
+
+        std::pair<double, double> integral;
+        std::pair<double, double> derivative;
+
+        double kp;
+        double ki;
+        double kd;
+
+};
+
+
 // For getting the robot position
 class GetPose : public rclcpp::Node
 {
@@ -137,27 +185,20 @@ public:
         auto obj2 = std::make_shared<GetPose>();        
         rclcpp::spin_some(obj2);        // Updating robot position
 
-        std::vector<double> distance = dist_speed(obj2->coord, goal, elapsed_time - duration);   // Format:  vel_x, vel_y, dist 
+        std::vector<double> distance = dist_speed(obj2->coord, goal);   // Format:  vel_x, vel_y, dist 
 
-        auto msg = geometry_msgs::msg::TwistStamped();
+        // PID Object
+        PID pid_1 = PID();
+
+        double rec_time = this->get_clock()->now().seconds();
 
         std::cout<<"Cart Duration"<<duration<<std::endl;
 
-        // while ((elapsed_time <= duration_) and (distance[2] > 0.1))
-        // while ((distance[2] > 0.5))
-        // while ((distance[2] > 0.1))
-
-        while ((duration - elapsed_time)>=0)
-        {   
-            // if ((duration - elapsed_time)<=0)
-            // {   
-            //     std::cout<<"Time is up."<<std::endl;    
-            //     break;
-            // }
-            
-            std::cout<<"Cart Elapsed Timer: "<< duration - elapsed_time <<std::endl;   
-            std::cout<<"Distance: "<< distance[2] <<std::endl;  
-            std::cout<<"Bot Pose "<< obj2->coord.first<< "\t"<<obj2->coord.second <<std::endl<<std::endl<<std::endl;   
+        while (elapsed_time < duration)
+        {               
+            // std::cout<<"Cart Elapsed Timer: "<< duration - elapsed_time <<std::endl;   
+            // std::cout<<"Distance: "<< distance[2] <<std::endl;  
+            // std::cout<<"Bot Pose "<< obj2->coord.first<< "\t"<<obj2->coord.second <<std::endl<<std::endl<<std::endl;   
 
             if (distance[2] > 2.0)
             {
@@ -167,44 +208,35 @@ public:
 
             rclcpp::spin_some(obj2);        // Updating robot position
 
-            // std::cout<<elapsed_time<<std::endl<<distance[2]<<std::endl<<obj2->coord.first<<std::endl<<obj2->coord.second<<std::endl<<distance[0]<<std::endl<<distance[1]<<std::endl<<std::endl<<std::endl;
-
+            auto msg = geometry_msgs::msg::TwistStamped();
             msg.header.stamp = this->get_clock()->now();
             msg.header.frame_id = "base_link";
             
-            int p_val = 12.0;    // Default value 2.0
+            std::pair<double, double> output = pid_1.process(distance, this->get_clock()->now().seconds() - rec_time);    
 
-            // msg.twist.linear.x = 0.74 * (distance[0] * p_val); // * 5.0;
-            // msg.twist.linear.y = 1.0 * (distance[1] * p_val); // * 6.75;
-
-            // msg.twist.linear.x = (distance[0] * p_val); 
-            // msg.twist.linear.y = (distance[1] * p_val); 
-
-            msg.twist.linear.x = ((distance[0]/(duration - elapsed_time)) * p_val); 
-            msg.twist.linear.y = ((distance[1]/(duration - elapsed_time)) * p_val); 
-
-            // msg.twist.linear.x = distance[0]; // * 5.0;
-            // msg.twist.linear.y = distance[1]; // * 6.75;
-
+            msg.twist.linear.x = output.first;
+            msg.twist.linear.y = output.second;
+           
             publisher_->publish(msg);
 
             elapsed_time = this->get_clock()->now().seconds() - start_time_.seconds();
-            distance = dist_speed(obj2->coord, goal, elapsed_time - duration);
+            distance = dist_speed(obj2->coord, goal);
+            rec_time = this->get_clock()->now().seconds();
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 30));  // Sleep for 1/30th of a second (~33 milliseconds)
         }
 
         std::cout<<"Goal Reached!"<<std::endl;
             
-        msg.twist.linear.x = distance[0] * -5.0;
-        msg.twist.linear.y = distance[1] * -5.0;
-        publisher_->publish(msg);
+        // msg.twist.linear.x = distance[0] * -5.0;
+        // msg.twist.linear.y = distance[1] * -5.0;
+        // publisher_->publish(msg);
 
         return;
     }
 
 private:
-    std::vector<double> dist_speed(std::pair<double, double> bot_pose, std::pair<double, double> goal, double remaning_time)
+    std::vector<double> dist_speed(std::pair<double, double> bot_pose, std::pair<double, double> goal)
     {
         std::vector<double> output(3);
         output[0] = goal.first - bot_pose.first; 
@@ -476,24 +508,24 @@ class GetLocation : public rclcpp::Node
                     
                     // Temp: To spawn the bot directly near point of strike.
 
-                    auto request = std::make_shared<gazebo_msgs::srv::SetEntityState::Request>();
+                    // auto request = std::make_shared<gazebo_msgs::srv::SetEntityState::Request>();
 
-                    request->state.name = "nice_bot";
+                    // request->state.name = "nice_bot";
     
-                    request->state.pose.position.x = goal_frame_cart.p[0];
-                    request->state.pose.position.y = goal_frame_cart.p[1];
-                    request->state.pose.position.z = 0.0;
+                    // request->state.pose.position.x = goal_frame_cart.p[0];
+                    // request->state.pose.position.y = goal_frame_cart.p[1];
+                    // request->state.pose.position.z = 0.0;
 
-                    request->state.reference_frame = "world";
+                    // request->state.reference_frame = "world";
 
-                    auto spawn_result = spawn_client->async_send_request(request);
+                    // auto spawn_result = spawn_client->async_send_request(request);
 
 
                     // ~~~~~~~~~~~~~~~~~~~
                     
                     // To move the cart through MecannumController
-                    // auto obj3 =RobotController();
-                    // obj3.publish_velocity(std::make_pair(goal_frame_cart.p[0], goal_frame_cart.p[1]), arm_move_time * 0.8);
+                    auto obj3 =RobotController();
+                    obj3.publish_velocity(std::make_pair(goal_frame_cart.p[0], goal_frame_cart.p[1]), arm_move_time * 0.8);
                     
                     // To get joint angle in radians provide goal location in cartisian space.
                     output_joint_position_ = obj_2->get_desired_joint_angles(j_position, goal_frame);
@@ -525,25 +557,25 @@ class GetLocation : public rclcpp::Node
             //traj_point.positions = {set_joint_position_(0), set_joint_position_(1), set_joint_position_(2), set_joint_position_(3)};
             traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0, set_joint_position_(3)};
             // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2);
-            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.7);
-            // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.1);
+            //traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.7);
+            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.1);
             traj.points.push_back(traj_point);
     
             // // Next move arm back to generate force.
             // // NOTE: These are like the coordinates to move to, not the amount to move by.
-            // //traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0 , set_joint_position_(3) + 1.0};
-            // traj_point.positions = {set_joint_position_(0) + 1.0, set_joint_position_(1) + 1.0, 0 , set_joint_position_(3)};
-            // // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/4);
-            // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.90);
-            // // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.15);
-            // traj.points.push_back(traj_point);
+            //traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0 , set_joint_position_(3) + 1.0};
+            traj_point.positions = {set_joint_position_(0) + 1.0, set_joint_position_(1) + 1.0, 0 , set_joint_position_(3)};
+            // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/4);
+            //traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.90);
+            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.15);
+            traj.points.push_back(traj_point);
 
-            // // Then move forward with speed.
-            // traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0, set_joint_position_(3)};
-            // // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/2);
+            // Then move forward with speed.
+            traj_point.positions = {set_joint_position_(0), set_joint_position_(1), 0, set_joint_position_(3)};
+            // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time/2 + arm_move_time/2);
             // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 1.1);
-            // // traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.2);
-            // traj.points.push_back(traj_point);
+            traj_point.time_from_start = rclcpp::Duration::from_seconds(arm_move_time * 0.2);
+            traj.points.push_back(traj_point);
             
             // Publish Data 
             publish_state->publish(traj);

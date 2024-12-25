@@ -8,7 +8,7 @@
         
         <!-- Variables -->
         <xacro:property name="sphere_radius" value="0.1"/>
-        <xacro:property name="sphere_mass" value="0.5"/>
+        <xacro:property name="sphere_mass" value="0.01"/>            <!-- 0.5-->
         
         <xacro:property name="l2_length" value="0.5"/>
         <xacro:property name="l3_length" value="0.3"/>
@@ -17,7 +17,7 @@
         <xacro:property name="racquet_thickness" value="0.07"/>     <!-- 0.02-->
         <xacro:property name="racquet_radius" value="0.25"/>        <!-- 0.2-->
             
-        <xacro:property name="general_mass" value="0.1"/>           <!-- 0.1-->
+        <xacro:property name="general_mass" value="0.01"/>           <!-- 0.1-->
         <xacro:property name="general_radius" value="0.02"/>
                     
         <!-- MATERIALS -->

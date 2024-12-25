@@ -16,12 +16,12 @@
     <xacro:property name="chassis_width" value="0.6"/>       <!-- 6 meter = 600 cm -->
     <xacro:property name="chassis_height" value="0.6"/>      <!-- 6 meter = 600 cm -->
     <xacro:property name="chassis_depth" value="0.02"/>      <!-- 0.02meter = 2 cm -->
-    <xacro:property name="chassis_mass" value="1"/>          <!-- 1 kg -->            
+    <xacro:property name="chassis_mass" value="0.1"/>          <!-- 1 kg -->            
     
     <!-- Wheel Properties -->
     <xacro:property name="wheel_radius" value="0.02"/>
     <xacro:property name="wheel_width" value="0.02"/>
-    <xacro:property name="wheel_mass" value="1"/>
+    <xacro:property name="wheel_mass" value="0.1"/>               <!-- 1 kg -->      
     
     
     <!-- Wheel Macro -->

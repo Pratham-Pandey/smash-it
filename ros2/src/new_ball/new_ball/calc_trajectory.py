@@ -85,7 +85,10 @@ class GetPose(Node):
                     
                     # if (distances[0] > self.arm_length):
 
-                    if (distances[0] > (self.arm_length) or distances[0] < (self.arm_length - 0.2)):
+                    dist_arm_to_ball = np.sqrt((x_data[nearest_index[0]] - bot_x)**2 + (y_data[nearest_index[0]] - bot_y)**2 + z_data[nearest_index[0]]**2)
+
+                    if (dist_arm_to_ball > (self.arm_length + 0.01) or dist_arm_to_ball < (self.arm_length - 0.01)):
+                    # if (distances[0] > (self.arm_length) or distances[0] < (self.arm_length - 0.2)):
                     # We will consider a sphere(3D) around the goal with a radius equal to the arm length. Now the edge of this sphere are the points through which the arm can reach the ball(goal point). But the mobile base cannot reach all the points on the edge of the sphere because it is fixed on ground(z=0). Therefore we will look for those points of the generated sphere which are having z=0.
                         
 #                   (gx - x)^2 + (gy - y)^2 + (gz-0)^2 = r^2    # Equation of a 3D Sphere.
