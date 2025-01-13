@@ -9,8 +9,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch_ros.actions import Node
 
-
-
 def generate_launch_description():
 
 
@@ -35,7 +33,6 @@ def generate_launch_description():
                                    '-entity', 'nice_bot'],
                         output='screen')
 
-    
     # Ros2 Controller 
 
     # For Base Vehicle    
@@ -52,7 +49,7 @@ def generate_launch_description():
         arguments=["joint_broad"],
     )
     
-    # For ARM
+    # For Arm
     jtc = Node(
     package="controller_manager",
     executable="spawner",
@@ -72,7 +69,6 @@ def generate_launch_description():
             executable='joint_state_publisher_gui',
             output='screen'
         )
-      
 
     # Launch them all!
     return LaunchDescription([
