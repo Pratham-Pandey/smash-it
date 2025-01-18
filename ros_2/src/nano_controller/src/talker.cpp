@@ -77,13 +77,13 @@ class MinimalPublisher : public rclcpp::Node
           msg.header.frame_id = "base_link"; 
 
           // Set linear velocity (x, y, z) and angular velocity (x, y, z)
-          msg.twist.linear.x = ((515 - values[0] )/515) * 6.0  ;  
-          msg.twist.linear.y = (((506 - values[1] )/506) * 6.0) * -1;   // Here multiplied with -1 becaue the controller respont to y commands inversly.
+          msg.twist.linear.x = ((515 - values[3] )/515) * 6.0  ;  
+          msg.twist.linear.y = (((506 - values[4] )/506) * 6.0) * -1;   // Here multiplied with -1 because the controller respont to y commands inversly.
           msg.twist.linear.z = 0.0;
 
           msg.twist.angular.x = 0.0;
           msg.twist.angular.y = 0.0;
-          msg.twist.angular.z = (((510 - values[4])/510) * 6.0) * -1;   // Here multiplied with -1 becaue the controller respont to y commands inversly.  
+          msg.twist.angular.z = (((510 - values[1])/510) * 6.0) * -1;   // Here multiplied with -1 becaue the controller respont to y commands inversly.  
 
           RCLCPP_INFO(this->get_logger(), "Publishing TwistStamped message with linear: (%.2f, %.2f, %.2f) and angular: (%.2f, %.2f, %.2f)",
                     msg.twist.linear.x, msg.twist.linear.y, msg.twist.linear.z,

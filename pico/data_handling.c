@@ -225,7 +225,7 @@ int main(){
         strncpy(temp_buff, read_buff + strlen(read_buff) -20, 20);
         temp_buff[20] = '\0';
 
-        printf("%s\n", temp_buff);
+        // printf("%s\n", temp_buff);
 
 
         // printf("Received: %s \n", read_buff);
@@ -277,10 +277,22 @@ int main(){
             //// printf("Rear RIGHT: %f \n", rear_right);
 
             // Setting dutycycle;
-            int duty_front_left = ENSURE_LESS_THAN_255((int)(fabs(front_left/6.0) * 255));
-            int duty_front_right = ENSURE_LESS_THAN_255((int)(fabs(front_right/6.0) * 255));
-            int duty_rear_left = ENSURE_LESS_THAN_255((int)(fabs(rear_left/6.0) * 255));
-            int duty_rear_right = ENSURE_LESS_THAN_255((int)(fabs(rear_right/6.0) * 255));
+            // int duty_front_left = ENSURE_LESS_THAN_255((int)(fabs(front_left/6.0) * 255));
+            // int duty_front_right = ENSURE_LESS_THAN_255((int)(fabs(front_right/6.0) * 255));
+            // int duty_rear_left = ENSURE_LESS_THAN_255((int)(fabs(rear_left/6.0) * 255));
+            // int duty_rear_right = ENSURE_LESS_THAN_255((int)(fabs(rear_right/6.0) * 255));
+
+            int duty_front_left = ENSURE_LESS_THAN_255((int)(fabs(front_left/255.0) * 255));
+            int duty_front_right = ENSURE_LESS_THAN_255((int)(fabs(front_right/255.0) * 255));
+            int duty_rear_left = ENSURE_LESS_THAN_255((int)(fabs(rear_left/255.0) * 255));
+            int duty_rear_right = ENSURE_LESS_THAN_255((int)(fabs(rear_right/255.0) * 255));
+
+
+            printf("Front LEFT: %f \n", front_left);
+            printf("Front RIGHT: %f \n", front_right);
+            printf("Rear LEFT: %f \n", rear_left);
+            printf("Rear RIGHT: %f \n\n\n", rear_right);
+
 
             // Front Left
             if (front_left >= 0.5) {
