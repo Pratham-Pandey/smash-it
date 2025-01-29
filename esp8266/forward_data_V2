@@ -1,0 +1,69 @@
+// To exchange(send and receive) data between ESP and pc via wifi
+
+#include <ESP8266WiFi.h>
+
+const char* ssid = "Nice";
+const char* password = "@)3!!EppsaLC*^5.";
+
+WiFiServer server(12345); // Port number
+
+void setup() {
+    Serial.begin(115200);
+
+    // Start the ESP as an Access Point
+    WiFi.softAP(ssid, password);
+
+    // Start the server
+    server.begin();
+
+    // Print the AP IP address
+    // Serial.println(WiFi.softAPIP());
+}
+
+void loop() {
+    // Check for a new client
+    WiFiClient client = server.available();
+    if (client) {
+        // Serial.println("Client connected");
+
+        client.print("Base Data.~");
+
+        while (client.connected()) {
+            if (client.available()) {
+                // Read data from PC
+                String message = client.readStringUntil('~');
+                
+                // Send data to Pico
+                Serial.println(message + "~");
+                
+                // Read data from PICO
+                String receivedString = "";
+                
+                while(true){
+                    if (Serial.available()) {           // Check if data is available
+                        char received = Serial.read();  // Read one character
+                    
+                        if (received == '~'){
+                            break;
+                        }else{
+                            receivedString += received;
+                        } 
+                    }
+                    else{
+                      break;
+                    }
+                }
+
+                // Send data back to the PC
+                client.print(receivedString + "~");
+
+            }
+        }
+
+        client.stop();  // Disconnect the client
+        Serial.println("Client disconnected");
+    } else {
+            Serial.println("Waiting for client...");
+    }
+}
+

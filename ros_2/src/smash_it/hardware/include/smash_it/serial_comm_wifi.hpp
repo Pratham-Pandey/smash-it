@@ -27,6 +27,18 @@ class GlowLed
             //boost::asio::write(serial, boost::asio::buffer(data));                              
         }
 
+        std::string receive_data() {
+            boost::asio::streambuf buffer;
+            boost::asio::read_until(socket, buffer, '~'); // Read until the delimiter '~'
+
+            std::istream input_stream(&buffer);
+            std::string response;
+            std::getline(input_stream, response, '~'); // Extract data without the delimiter
+
+            std::cout << "Data received from ESP8266: " << response << "\n";
+            return response;
+        }
+
     private:
         //std::string port;
         const int PORT; // Port number

@@ -143,7 +143,10 @@ hardware_interface::CallbackReturn SmashItBotSystemHardware::on_deactivate(
 hardware_interface::return_type SmashItBotSystemHardware::read(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
 {
-  //RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Reading...");
+  RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Reading...");
+  std::string received_data = led_1.receive_data();
+  RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Received: %s", received_data.c_str());  
+  
   return hardware_interface::return_type::OK;
 }
 
