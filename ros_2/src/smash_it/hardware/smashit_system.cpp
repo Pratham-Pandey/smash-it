@@ -11,12 +11,21 @@
 #include "hardware_interface/lexical_casts.hpp"
 #include "hardware_interface/types/hardware_interface_type_values.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include <std_msgs/msg/string.hpp>
+
+#include "rclcpp/rclcpp.hpp"
+
 
 namespace smash_it
 {
 hardware_interface::CallbackReturn SmashItBotSystemHardware::on_init(
   const hardware_interface::HardwareInfo & info)
-{
+{   
+
+  // For publishing position estimate
+  node_pose_est_ = rclcpp::Node::make_shared("node_pose_est");
+  publisher_pose_est_ = node_pose_est_->create_publisher<std_msgs::msg::String>("pose_estimate", 10);
+
   if (
     hardware_interface::SystemInterface::on_init(info) !=
     hardware_interface::CallbackReturn::SUCCESS)
@@ -145,6 +154,12 @@ hardware_interface::return_type SmashItBotSystemHardware::read(
 {
   RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Reading...");
   std::string received_data = led_1.receive_data();
+  
+  // Publish Position Data
+  auto message = std_msgs::msg::String();
+  message.data = received_data;
+  publisher_pose_est_->publish(message);
+
   RCLCPP_INFO(rclcpp::get_logger("SmashItBotSystemHardware"), "Received: %s", received_data.c_str());  
   
   return hardware_interface::return_type::OK;

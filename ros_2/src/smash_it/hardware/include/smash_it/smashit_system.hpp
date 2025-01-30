@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <functional>
 
 #include "hardware_interface/handle.hpp"
 #include "hardware_interface/hardware_info.hpp"
@@ -15,8 +16,11 @@
 #include "rclcpp/time.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
+#include "rclcpp/rclcpp.hpp"
 
 #include "smash_it/serial_comm.hpp"
+
+#include <std_msgs/msg/string.hpp>
 
 namespace smash_it
 {
@@ -52,6 +56,12 @@ private:
   std::vector<double> hw_commands_;
   std::vector<double> hw_positions_;
   std::vector<double> hw_velocities_;
+
+  rclcpp::Node::SharedPtr node_pose_est_;
+  // std::shared_ptr<rclcpp::Node> node_pose_est_; 
+  
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_pose_est_;
+
 };
 
 }  // namespace smash_it

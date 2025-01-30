@@ -34,6 +34,16 @@ target_include_directories(smash_it PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
 $<INSTALL_INTERFACE:include/smash_it>
 )
+
+
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+# For moving cart to a specific pose.
+add_executable(play src/play.cpp)
+
+ament_target_dependencies(play rclcpp std_msgs geometry_msgs)
+
 ament_target_dependencies(
   smash_it PUBLIC
   ${THIS_PACKAGE_INCLUDE_DEPENDS}
@@ -61,6 +71,11 @@ install(TARGETS smash_it
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
+
+install(TARGETS
+  play
+  DESTINATION lib/${PROJECT_NAME})
+
 
 ## EXPORTS
 ament_export_targets(export_smash_it HAS_LIBRARY_TARGET)
