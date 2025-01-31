@@ -29,7 +29,8 @@ A real world model os "SmashIt" is also being worked upon. As of now, the base(4
 * 4 775 DC motors are used.
 * 4 custom gearbox have been created to icrease the torque of teh 775 DC motors. Gearbox images and specification are available below.
 * 4 high current motor controllers are used.
-* An IMU is also installed which provides accelerometer and gyroscope data. 
+* An IMU is also installed which provides accelerometer and gyroscope data.
+* A 12v battery with an buck converter is used to power supply to Pico and the ESP.
 
 ### Data Flow
  The following steps explain how data flows throughout the system:
