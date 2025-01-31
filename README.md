@@ -13,3 +13,16 @@
 > This project is divided into 2 parts, Simulation and Real world. The main branch is kept empty for clarity. 
 > * Simulation: This part is software based only and uses Gazebo as simulator. Switch to 'simulation' branch to checkout its code.
 > * Realworld: This part utilize realworld hardware instead of simulation. Switch to 'real_world' branch to checkout its code.
+
+
+## Simulation
+
+https://github.com/user-attachments/assets/51eb29b0-6327-4e09-ad26-5f32ef586e22
+
+
+
+## Real World
+
+https://github.com/user-attachments/assets/3dc5d377-4991-4fca-b68a-abccd1728759
+
+
