@@ -46,7 +46,7 @@ A real world model os "SmashIt" is also being worked upon. As of now, the base(4
        * Collecting data from 4 encoders and an IMU.
        * Sending  data to core 0 as soon as an interrupt is generated. Core 1 is kept reserved for sensor data collection.
          
- * Once the robot position is estimated, the pico sends data to ESP which inturn forwards it to the PC and the process repeats.
+ * Once the robot position is estimated, the pico sends data to ESP which in-turn forwards it to the PC and the process repeats.
 
 
 
@@ -60,7 +60,7 @@ A custom gearbox is designed to increase the torque of the 775 DC motor. The det
 * 775 Base motor torque: 0.116 N·m
 * Gearbox Ratio: 6:1
 * Total torque output per wheel(motor + gearbox): 0.696 N.m
-* 
+  
 ![1000023560](https://github.com/user-attachments/assets/651167bd-2f1b-4886-853d-57bf46d4ce92)
 <img src="https://github.com/user-attachments/assets/ac04f767-61bc-44c3-9bee-ee56d1b8560f" width="500" height="500"/>
 ![1000023566](https://github.com/user-attachments/assets/7e36d4db-2282-4a80-92d0-1cc0144e6667)
@@ -68,13 +68,13 @@ A custom gearbox is designed to increase the torque of the 775 DC motor. The det
 ### Remote Control
 A remote control is designed for teleoperating the robot, specifically for testing and debugging purposes. The details are as follows:
 * Base Board: Arduino nano
-* Switches: 2 Joystick Switches
+* Switches: 2x Joystick Switches
 
   ![Remote_Control](https://github.com/user-attachments/assets/557ca4e1-884e-4a73-939a-7990b71dd165)
 
 ### Video and Images
 
-https://github.com/user-attachments/assets/2d0c9a70-ad9f-44bf-8a4f-b752a573428f
+https://github.com/user-attachments/assets/7da410a6-5ed0-419e-9d48-7f9933f0e9fe
 
 ![Top_View](https://github.com/user-attachments/assets/4ffcc9af-e3d7-4492-b779-cd6cf8139fa6)
 ![Front_View](https://github.com/user-attachments/assets/c4095844-9a3b-4268-93a0-7cb4f1025cf9)
