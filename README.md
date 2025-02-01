@@ -47,23 +47,39 @@ A real world model os "SmashIt" is also being worked upon. As of now, the base(4
        * Sending  data to core 0 as soon as an interrupt is generated. Core 1 is kept reserved for sensor data collection.
          
  * Once the robot position is estimated, the pico sends data to ESP which inturn forwards it to the PC and the process repeats.
- 
-### Gear Box
-A custom gearbox is created to increase the torque of the 775 DC motor. The details are as follows:
-* 775 Base motor torque: 0.116 N·m
-* Gearbox Ratio: 6:1
-* Total torque output per wheel(motor + gearbox): 0.696 N.m
-![1000023560](https://github.com/user-attachments/assets/ac04f767-61bc-44c3-9bee-ee56d1b8560f)
-![1000023566](https://github.com/user-attachments/assets/7e36d4db-2282-4a80-92d0-1cc0144e6667)
 
-  
+
+
 ![data_flow](https://github.com/user-attachments/assets/cde7371a-3ae4-4544-ac8e-68a7ad1fd733)
 
 >  [!NOTE]
 > In the image above, the ESP is intentially ommitted to avoid clutter.  
+ 
+### Gear Box
+A custom gearbox is designed to increase the torque of the 775 DC motor. The details are as follows:
+* 775 Base motor torque: 0.116 N·m
+* Gearbox Ratio: 6:1
+* Total torque output per wheel(motor + gearbox): 0.696 N.m
+* 
+![1000023560](https://github.com/user-attachments/assets/651167bd-2f1b-4886-853d-57bf46d4ce92)
+<img src="https://github.com/user-attachments/assets/ac04f767-61bc-44c3-9bee-ee56d1b8560f" width="500" height="500"/>
+![1000023566](https://github.com/user-attachments/assets/7e36d4db-2282-4a80-92d0-1cc0144e6667)
 
+### Remote Control
+A remote control is designed for teleoperating the robot, specifically for testing and debugging purposes. The details are as follows:
+* Base Board: Arduino nano
+* Switches: 2 Joystick Switches
+
+  ![Remote_Control](https://github.com/user-attachments/assets/557ca4e1-884e-4a73-939a-7990b71dd165)
+
+### Video and Images
 
 https://github.com/user-attachments/assets/2d0c9a70-ad9f-44bf-8a4f-b752a573428f
 
+![Top_View](https://github.com/user-attachments/assets/4ffcc9af-e3d7-4492-b779-cd6cf8139fa6)
+![Front_View](https://github.com/user-attachments/assets/c4095844-9a3b-4268-93a0-7cb4f1025cf9)
+![Circuit_1](https://github.com/user-attachments/assets/6a93c9da-0148-446a-96ff-261cbbd02e40)
+![Circuit_2](https://github.com/user-attachments/assets/8b76f58f-3005-4d71-9386-29f7b17fb994)
+![Circuit_3](https://github.com/user-attachments/assets/523b8852-a32f-4c44-b208-ea17cacd347b)
 
 
