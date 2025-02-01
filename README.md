@@ -17,8 +17,12 @@
 
 ## Simulation
 
+
+
+### Video and Images
 https://github.com/user-attachments/assets/51eb29b0-6327-4e09-ad26-5f32ef586e22
 
+### Steps To Run Locally
 
 
 ## Real World(Work in Progress)
@@ -53,7 +57,7 @@ A real world model os "SmashIt" is also being worked upon. As of now, the base(4
 ![data_flow](https://github.com/user-attachments/assets/cde7371a-3ae4-4544-ac8e-68a7ad1fd733)
 
 >  [!NOTE]
-> In the image above, the ESP is intentially ommitted to avoid clutter.  
+> In the image above, the ESP is intentionally ommitted to avoid clutter.  
  
 ### Gear Box
 A custom gearbox is designed to increase the torque of the 775 DC motor. The details are as follows:
@@ -67,8 +71,8 @@ A custom gearbox is designed to increase the torque of the 775 DC motor. The det
 
 ### Remote Control
 A remote control is designed for teleoperating the robot, specifically for testing and debugging purposes. The details are as follows:
-* Base Board: Arduino nano
-* Switches: 2x Joystick Switches
+* **Base Board:** Arduino nano
+* **Switches:** 2x Joystick Switches
 
   ![Remote_Control](https://github.com/user-attachments/assets/557ca4e1-884e-4a73-939a-7990b71dd165)
 
