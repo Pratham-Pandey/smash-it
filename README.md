@@ -34,19 +34,24 @@ A real world model os "SmashIt" is also being worked upon. As of now, the base(4
 
 ### Data Flow
  The following steps explain how data flows throughout the system:
- * PC Side: Initial position(0,0) is compared  with goal position and the resulting distance is fed into and mecanum drive Inverse Kinematics controller. The controller generates individual velocity reguired by each wheel to reach goal which are forwarded to the ESP-8266 via WiFi
+ * PC Side: Initial position(0,0) of the robot is compared with goal position and the resulting distance is fed into an mecanum drive controller. The controller generates individual velocity(using Inverse Kinematics) reguired by each wheel to reach goal which are forwarded to the ESP-8266 via WiFi
  * ESP Side: It simply forwards the data to Pico via UART.
- * Pico Side: On the pico there are 2 cores. Core 0 is resposible for receiving and sending data to ESP. It is also responsible for estimating robot position based on sensor data using an Extended Kalman Filter. Core 1 is responsible for collecting data from 4 encoders and an IMU and sending  data to core 0 as soon as an interrupt is generated. Core 1 is kept reserved for sensor data collection.
- * Once the robot position is estimated, the pico sends  data to ESP which inturn forwards it to the PC.
+ * Pico Side: On the pico there are 2 cores:
+    * Core 0: Resposible for:
+       * Receiving wheel velocities from ESP and forwarding it to motor controller.
+       * Generating  interrupt requesting data from Core 1.
+       * Estimating robot position using Encoder and IMU readings.
+       * Forwarding th estimated robot position to ESP.
+    * Core 1: Responsible for:
+       * Collecting data from 4 encoders and an IMU.
+       * Sending  data to core 0 as soon as an interrupt is generated. Core 1 is kept reserved for sensor data collection.
+         
+ * Once the robot position is estimated, the pico sends data to ESP which inturn forwards it to the PC and the process repeats.
     
 ![data_flow](https://github.com/user-attachments/assets/cde7371a-3ae4-4544-ac8e-68a7ad1fd733)
 
 >  [!NOTE]
 > In the image above, the ESP is intentially ommitted to avoid clutter.  
-
-
-
-https://github.com/user-attachments/assets/3dc5d377-4991-4fca-b68a-abccd1728759
 
 
 https://github.com/user-attachments/assets/2d0c9a70-ad9f-44bf-8a4f-b752a573428f
