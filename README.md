@@ -1,4 +1,4 @@
-# Smash It
+# SmashIt
 
 ## About
 * **SmashIt** is a tennis playing robot designed to autonomously return incoming tennis balls.
@@ -43,6 +43,12 @@ ROS2 is utilized as middleware and Gazebo is used for simulating the robot and t
 
 ### Video and Images
 https://github.com/user-attachments/assets/51eb29b0-6327-4e09-ad26-5f32ef586e22
+
+![Z1](https://github.com/user-attachments/assets/d7568273-4fcd-4f84-b591-f991d7ab67b4)
+![z2](https://github.com/user-attachments/assets/b7ec2bb4-4d34-4826-b7b3-e4bb54e2fc1f)
+![z3](https://github.com/user-attachments/assets/ce714e35-0799-40f8-a7fb-66933369f14f)
+
+
 
 ### Steps To Run Locally
 
@@ -126,7 +132,6 @@ A custom gearbox is designed to increase the torque of the 775 DC motor. The det
 * Total torque output per wheel(motor + gearbox): 0.696 N.m
   
 ![1000023560](https://github.com/user-attachments/assets/651167bd-2f1b-4886-853d-57bf46d4ce92)
-<img src="https://github.com/user-attachments/assets/ac04f767-61bc-44c3-9bee-ee56d1b8560f" width="500" height="500"/>
 ![1000023566](https://github.com/user-attachments/assets/7e36d4db-2282-4a80-92d0-1cc0144e6667)
 
 ### Remote Control
