@@ -17,12 +17,72 @@
 
 ## Simulation
 
+ROS2 is utilized as middleware and Gazebo is used for simulating the robot and the environment. In simulation, there are 4 major components:
+
+* Ball Spawner:
+   * Responsible for spawning ball in the environment.
+   * It spawn ball with a random force in x, y and z direction.
+      
+* Trajectory Estimator:
+   * It is responsible for:
+      * Estimating ball trajectory.
+      * Calculating the goal position for the mobile base to reach to take the shot.
+      * Time within which the mobile base must reach the point to take the shot.
+   * It estimates the trajectory of the ball using equation of bouncing ball.
+   * It choose the point in the ball trajectory which is nearest to the current robot position to reduce the distance traveled by the mobile base.
+   * Once the mobile base goal, end-effector goal and the time to reach is calculated, it is published to a topic for other ROS2 nodes to use.
+     
+* Player:
+   * It reads the data published by the Trajectory Estimator.    
+   * It is responsible for moving the robot to the estimated position and moving the arm to the point of impact.
+   * It uses mecanum drive Inverse Kinematics to calculate the amount by which each wheel should move to reach the goal.
+   * It uses PID controller to reach the goal.
+   * Once the mobile base reaches its goal, arm Inverse Kinematics is utilized to move arm to the point of impact.
+       
 
 
 ### Video and Images
 https://github.com/user-attachments/assets/51eb29b0-6327-4e09-ad26-5f32ef586e22
 
 ### Steps To Run Locally
+
+Clone the project
+```bash
+  https://github.com/Pratham-Pandey/smash-it.git
+```
+Create local tracking branch for the remote branch
+```bash
+  git checkout -b simulation origin/simulation
+```
+Go to the project directory
+```bash
+  cd ros2
+```
+Build Project
+```bash
+  colcon build --symlink-install
+```
+Source Project
+```bash
+  source install/setup.bash 
+```
+Run Launch File
+```bash
+  ros2 launch test_bot launch_sim.launch.py
+```
+Run Ball Spawner
+```bash
+  ros2 run new_ball spawn
+```
+Run Trajectory Publisher
+```bash
+  ros2 run new_ball talker
+```
+Run Player Node
+```bash
+  ros2 run test_bot play
+```
+
 
 
 ## Real World(Work in Progress)
@@ -87,3 +147,38 @@ https://github.com/user-attachments/assets/7da410a6-5ed0-419e-9d48-7f9933f0e9fe
 ![Circuit_3](https://github.com/user-attachments/assets/523b8852-a32f-4c44-b208-ea17cacd347b)
 
 
+
+### Steps To Run Locally
+
+Clone the project
+```bash
+  https://github.com/Pratham-Pandey/smash-it.git
+```
+Create local tracking branch for the remote branch
+```bash
+  git checkout -b real_world origin/real_world
+```
+Go to the project directory
+```bash
+  cd ros_2
+```
+Build Project
+```bash
+  colcon build --symlink-install
+```
+Source Project
+```bash
+  source install/setup.bash 
+```
+Run Launch File
+```bash
+  ros2 launch smash_it smashit.launch.py
+```
+Run Remote Controller Node
+```bash
+  ros2 run nano_controller start
+```
+
+>  [!NOTE]
+> * Make sure the system is connected to the ESP-8266 network before running the launch file.
+> * Make sure the remote Controller is connected to the system before executing the Remote Controller Node.
