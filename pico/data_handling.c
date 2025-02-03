@@ -1,14 +1,15 @@
 // Layout::
 //
 // Core 0:
-//      * Receiving wheel velocity from ROS2(PC)  and publishing it to the wheels.     
-//      * Sending psoition estimate(from core 1) to ROS2(PC).
+//     * Receiving wheel velocities from ESP and forwarding it to motor controller.
+//     * Generating interrupt requesting data from Core 1.
+//     * Estimating robot position using Encoder and IMU readings.
+//     * Forwarding th estimated robot position to ESP.
 //
 // Core 1:
-//      * Position Estimate 1: Collect encoder Data, estimate robot position using Kinematics. 
-//      * Position Estimate 2: Collect IMU Data, integrate it ovevr time to estimate robot position.
-//      * Position Estimate 3: Fuse Position Estimate 1 and 2 using Extended Kalman Filter to obtain the final estimate.
-//      * Pass the adta to core 0 for sending it to ROS2(PC).
+//      
+//     * Collecting data from 4 encoders and an IMU.
+//     * Sending data to core 0 as soon as an interrupt is generated. Core 1 is kept reserved for sensor data collection.
 
 
 
@@ -48,8 +49,6 @@
 #define UART_ID uart0
 
 #define SIZE 6
-
-
 
 typedef struct {
     int R_PWM;
