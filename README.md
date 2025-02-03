@@ -19,11 +19,11 @@
 
 ROS2 is utilized as middleware and Gazebo is used for simulating the robot and the environment. In simulation, there are 4 major components:
 
-* Ball Spawner:
+* **Ball Spawner:**
    * Responsible for spawning ball in the environment.
    * It spawn ball with a random force in x, y and z direction.
       
-* Trajectory Estimator:
+* **Trajectory Estimator:**
    * It is responsible for:
       * Estimating ball trajectory.
       * Calculating the goal position for the mobile base to reach to take the shot.
@@ -32,7 +32,7 @@ ROS2 is utilized as middleware and Gazebo is used for simulating the robot and t
    * It choose the point in the ball trajectory which is nearest to the current robot position to reduce the distance traveled by the mobile base.
    * Once the mobile base goal, end-effector goal and the time to reach is calculated, it is published to a topic for other ROS2 nodes to use.
      
-* Player:
+* **Player:**
    * It reads the data published by the Trajectory Estimator.    
    * It is responsible for moving the robot to the estimated position and moving the arm to the point of impact.
    * It uses mecanum drive Inverse Kinematics to calculate the amount by which each wheel should move to reach the goal.
@@ -94,10 +94,10 @@ Run Player Node
 ## Real World(Work in Progress)
 A real world model os "SmashIt" is also being worked upon. As of now, the base(4 wheel cart) is completed and is fully functional. It can navigate to a specified coordinate within a given time, provided the input is feasible. However, due to the absence of external references like GPS, vision, or LiDAR, positional drift occurs over time. Later, an IR-based stereo vision setup will be added as an external reference. The follwoing are the key highlits of the base cart: 
 
-* The base cart uses an Raspberry Pi Pico(for onboard computation) and an NodeMCU ESP-8226(for wireless communication).
+* The base cart uses an **Raspberry Pi Pico(for onboard computation)** and an **NodeMCU ESP-8226(for wireless communication)**.
 * Heavy computations are done on a desktop computer and is sent to Raspberry Pi Pico via ESP-8226.
 * 4x **775 DC motors** are used.
-* 4x custom gearbox have been created to increase the torque of the 775 DC motors. Gearbox images and specification are available below.
+* 4x custom gearbox have been designed to increase the torque of the 775 DC motors. Gearbox images and specification are available below.
 * 4x **Double BTS7960 high current motor drivers** are used.
 * An **MPU-6050(IMU)** is also installed which provides accelerometer and gyroscope data.
 * A 12v battery with a buck converter is used to power the Pico and ESP.
@@ -127,9 +127,9 @@ A real world model os "SmashIt" is also being worked upon. As of now, the base(4
  
 ### Gear Box
 A custom gearbox is designed to increase the torque of the 775 DC motor. The details are as follows:
-* 775 Base motor torque: 0.116 N·m
-* Gearbox Ratio: 6:1
-* Total torque output per wheel(motor + gearbox): 0.696 N.m
+* **775 Base motor torque:** 0.116 N·m
+* **Gearbox Ratio:** 6:1
+* **Total torque output per wheel(motor + gearbox):** 0.696 N.m
   
 ![1000023560](https://github.com/user-attachments/assets/651167bd-2f1b-4886-853d-57bf46d4ce92)
 ![1000023566](https://github.com/user-attachments/assets/7e36d4db-2282-4a80-92d0-1cc0144e6667)
