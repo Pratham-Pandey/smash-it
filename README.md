@@ -133,6 +133,8 @@ A custom gearbox is designed to increase the torque of the 775 DC motor. The det
   
 ![1000023560](https://github.com/user-attachments/assets/651167bd-2f1b-4886-853d-57bf46d4ce92)
 ![1000023566](https://github.com/user-attachments/assets/7e36d4db-2282-4a80-92d0-1cc0144e6667)
+![CAD](https://github.com/user-attachments/assets/4edbfaf1-7a4f-4ab0-88ac-e8e1e5c6953a)
+
 
 ### Remote Control
 A remote control is designed for teleoperating the robot, specifically for testing and debugging purposes. The details are as follows:
