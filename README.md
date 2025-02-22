@@ -54,7 +54,7 @@ https://github.com/user-attachments/assets/51eb29b0-6327-4e09-ad26-5f32ef586e22
 
 Clone the project
 ```bash
-  https://github.com/Pratham-Pandey/smash-it.git
+  git clone https://github.com/Pratham-Pandey/smash-it.git
 ```
 Create local tracking branch for the remote branch
 ```bash
