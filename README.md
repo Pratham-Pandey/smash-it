@@ -1,4 +1,4 @@
-# SmashIt
+# SmashIt   🎾
 
 ## About
 * **SmashIt** is a tennis playing robot designed to autonomously return incoming tennis balls.
